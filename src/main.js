@@ -1,9 +1,10 @@
 const {
   app, Menu, MenuItem, Tray,
-  clipboard, nativeImage, dialog
+  clipboard, nativeImage, dialog,
+  autoUpdater
 } = require('electron')
 const path = require('path')
-
+const AutoLaunch = require('auto-launch')
 const notify = require('./notification')
 const about = require('./about')
 const subscribe = require('./subscribe')
@@ -14,6 +15,9 @@ const storage = require('./storage')
 const config = require('./config')
 const { resource, asyncAll, textCut, dateFormat, noop } = require('./utils')
 
+const appVersion = require('../package.json').version;
+
+
 const fileMessageFormat = items => {
   const length = items.length
   const suffix = length > 1 ? `等 ${length} 张图片` : ''
@@ -23,10 +27,9 @@ const fileMessageFormat = items => {
 
 app.on('ready', init)
 
-//这个不写会默认quite 好奇怪
+//这个不写会默认quite
 app.on('window-all-closed', noop)
 app.dock.hide()
-
 
 let tray = null
 function init () {
@@ -153,7 +156,7 @@ function updateMenu () {
   const template = []
   { // 关于围脖图床
     template.push({
-      label: '关于 围脖图床',
+      label: '关于 围脖是个好图床',
       click () { about.show() }
     })
   }
@@ -303,7 +306,32 @@ function updateMenu () {
       }
     })
   }
+  { // 设置 - 登录时自动打开
+    const key = 'launch_at_login'
+    const value = config.get(key)
+    template.push({
+      type: 'checkbox',
+      label: '登录时自动打开',
+      checked: !!value,
+      click () {
+        config.set(key, !value)
+        const autoLaunch = new AutoLaunch({
+          name: '围脖是个好图床',
+          path: path.resolve(process.execPath, '../../../'),
+          mac: true,
+          isHidden: true
+        })
+        if (!value) {
+          autoLaunch.enable()
+        } else {
+          autoLaunch.disable()
+        }
+        updateMenu()
+      }
+    })
+  }
 
+  template.push({ type: 'separator' })
 
   { // 微博登陆状态
     const weiboCookies = storage.get('weibo_cookies')
@@ -327,7 +355,7 @@ function updateMenu () {
   template.push({ type: 'separator' })
 
   { // 退出
-    template.push({ label: '退出围脖图床', role: 'quit' })
+    template.push({ label: '退出围脖是个好图床', role: 'quit' })
   }
 
   contextMenu = Menu.buildFromTemplate(template)

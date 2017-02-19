@@ -4,7 +4,8 @@ const configs = storage.get('configs') || {}
 
 const DEFAULT_CONFIGS = {
   'write_clipboard_when_uploaded': true,
-  'copy_format_markdown': false
+  'copy_format_markdown': false,
+  'launch_at_login': false
 }
 
 for (let key in DEFAULT_CONFIGS) {
