@@ -1,0 +1,20 @@
+{
+  "name": "weibotuchuang",
+  "productName": "围脖是个好图床",
+  "version": "1.0.0",
+  "description": "围脖是个好图床",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "zythum",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.6.0",
+    "electron-packager": "^8.5.1"
+  },
+  "dependencies": {
+    "request": "^2.79.0",
+    "rimraf": "^2.5.4"
+  }
+}

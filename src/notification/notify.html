@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><title></title></head><body>
+<script type="text/javascript">
+
+const { ipcRenderer } = require('electron')
+ipcRenderer.on('display-notification', (event, arg) => {
+  const notification = new Notification(arg.title, arg.opts)
+  notification.onclick = () =>
+    ipcRenderer.send('display-notification-onclick', arg.uid)
+})
+
+</script>
+</body></html>
