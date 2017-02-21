@@ -181,8 +181,15 @@ function doUpload (cookies, files) {
         writeClipboard ? '已写入剪贴板' : '点击写入剪贴板'
 
       notify( message, { body: detail }, () => {
-        if (!writeClipboard && urls.length)
-          clipboard.writeText(urls.join('\n'))
+        if (!writeClipboard && urls.length) {
+          if (config.get('copy_format_markdown')) {
+            clipboard.writeText(history.map((his, index) => {
+              return `![${his.name}](${urls[index]})`
+            }).join('\n'))
+          } else {
+            clipboard.writeText(urls.join('\n'))
+          }
+        }
       })
     }
   }
