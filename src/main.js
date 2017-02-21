@@ -144,7 +144,15 @@ function doUpload (cookies, files) {
 
     // 写入剪贴板
     const writeClipboard = config.get('write_clipboard_when_uploaded')
-    if (writeClipboard && urls.length) clipboard.writeText(urls.join('\n'))
+    if (writeClipboard && urls.length) {
+      if (config.get('copy_format_markdown')) {
+        clipboard.writeText(history.map((his, index) => {
+          return `![${his.name}](${urls[index]})`
+        }).join('\n'))
+      } else {
+        clipboard.writeText(urls.join('\n'))
+      }
+    }
 
     // 写入历史
     if (history.length) {
@@ -252,10 +260,7 @@ function updateMenu () {
         const copy = () => {
           const key = 'copy_format_markdown'
           if (config.get(key)) {
-            clipboard.writeText(history.map(his => {
-              const url = imgParser(his.pid, 'large')
-              return `![${his.name}](${url})`
-            }).join('\n'))
+            clipboard.writeText(`![${his.name}](${url})`)
             return
           }
           clipboard.writeText(url)
@@ -379,7 +384,7 @@ function updateMenu () {
         if (value) {
           updater.stopCheckInterval()
         } else {
-          updater.checkInterval(false)
+          updater.checkInterval(true)
         }
         updateMenu()
       }

@@ -49,7 +49,7 @@ const check = exports.check = quite => {
 }
 
 let interval = null
-exports.checkInterval = (quite) => {
+exports.checkInterval = quite => {
   if (interval !== null) return
   check(quite)
   interval = setInterval(() => check(quite), 1000 * 60 * 60 * 2)
