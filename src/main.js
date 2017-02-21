@@ -211,7 +211,8 @@ function updateMenu () {
     const options = {
       filters: [
         {name: 'Images', extensions: ['jpg', 'png', 'gif']}
-      ]
+      ],
+      properties: ['openFile', 'multiSelections']
     }
     template.push({
       label: '上传图片',

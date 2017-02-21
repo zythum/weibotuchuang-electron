@@ -10,7 +10,7 @@ const cookieString = cookies => {
 }
 
 module.exports = (callback=noop) => {
-  let win = new BrowserWindow({width: 551, height: 355, resizable: false})
+  let win = new BrowserWindow({width: 551, height: 375, resizable: false})
   win.on('closed', () => win = null)
 
   const contents = win.webContents

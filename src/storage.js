@@ -1,10 +1,10 @@
+const { app } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const crypto = require('crypto')
 const rimraf = require('rimraf')
-const homedir = require('os').homedir()
 
-const CONFIG_FILE_PATH = path.resolve(homedir, '.weibotuchuang')
+const CONFIG_FILE_PATH = path.resolve(app.getPath('home'), '.weibotuchuang')
 const CONFIG_SECRET = '今天天气不错'
 
 const storage = {}

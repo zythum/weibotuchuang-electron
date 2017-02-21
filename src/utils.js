@@ -1,9 +1,10 @@
+const { app } = require('electron')
 const path = require('path')
 
 exports.noop = () => {}
 
 exports.resource = subPath => {
-  return path.resolve(__dirname, '../resource', subPath)
+  return path.resolve(app.getAppPath(), 'resource', subPath)
 }
 
 exports.objectPath = (object, path) => {
