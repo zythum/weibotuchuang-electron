@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 Copyright 2017 Zythum_朱一 https://github.com/zythum/weibotuchuang-electron
-=======
-Copyright 2015 Zythum_朱一 http://zythum.github.io/mama2/
->>>>>>> 6ab58ed196a3fdc8114a72cadfb46c71683c7bfc
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
