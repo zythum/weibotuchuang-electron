@@ -1,7 +1,7 @@
 {
   "name": "weibotuchuang",
   "productName": "围脖是个好图床",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "围脖是个好图床",
   "main": "src/main.js",
   "scripts": {
