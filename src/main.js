@@ -1,7 +1,6 @@
 const {
   app, Menu, MenuItem, Tray,
-  clipboard, nativeImage, dialog,
-  autoUpdater
+  clipboard, nativeImage, dialog
 } = require('electron')
 const path = require('path')
 const AutoLaunch = require('auto-launch')
@@ -11,9 +10,12 @@ const subscribe = require('./subscribe')
 const uploader = require('./sinaimgUploader')
 const imgParser = require('./sinaimgParser')
 const weiboLogin = require('./weiboLogin')
+const updater = require('./updater')
 const storage = require('./storage')
 const config = require('./config')
+
 const { resource, asyncAll, textCut, dateFormat, noop } = require('./utils')
+
 
 const appVersion = require('../package.json').version;
 
@@ -45,6 +47,10 @@ function init () {
     tray.setTitle(count ? '⇧' + count : '')
   })
   updateMenu()
+
+  if (config.get('auto_update')) {
+    updater.checkInterval(true)
+  }
 }
 
 let uploading = false
@@ -52,6 +58,7 @@ function uploadFiles (files) {
   if (uploading) return
   const weiboCookies = storage.get('weibo_cookies')
   if (!weiboCookies) {
+    app.focus()
     dialog.showMessageBox({
       type: 'info',
       message: '您还没有登陆围脖账号',
@@ -90,12 +97,34 @@ function doUpload (cookies, files) {
     const errorFiles = []
     const history = []
 
-    results.forEach((result, index) => {
-
-      const [err, pid] = result
-
+    for (let index = 0; index < results.length; index++) {
+      const [err, pid] = results[index]
       const file = files[index]
-      if (err) return errorFiles.push(file)
+
+      if (err !== null) {
+        errorFiles.push(file)
+        if (err === -1) {
+          storage.remove('weibo_cookies')
+          updateMenu()
+          dialog.showMessageBox({
+            type: 'info',
+            message: '你的微博登陆凭证貌似已经过期',
+            detail: [
+              '围脖图床是通过围脖来上传图片的，',
+              '你需要通过重新登陆微博之后再次上传您的图片'
+            ].join('\n'),
+            buttons: ['重新登陆微博', '取消'],
+          }, res => {
+            if (res !== 0) return
+            weiboLogin((err, cookies) => {
+              storage.set('weibo_cookies', cookies)
+              updateMenu()
+            })
+          })
+          return
+        }
+        continue
+      }
 
       // 获取url
       urls.push(imgParser(pid, 'large'))
@@ -111,7 +140,7 @@ function doUpload (cookies, files) {
         base64: image.toDataURL(),
         pid: pid,
       })
-    })
+    }
 
     // 写入剪贴板
     const writeClipboard = config.get('write_clipboard_when_uploaded')
@@ -158,6 +187,13 @@ function updateMenu () {
     template.push({
       label: '关于 围脖是个好图床',
       click () { about.show() }
+    })
+  }
+
+  { // 检测更新
+    template.push({
+      label: '检测更新',
+      click () { updater.check() }
     })
   }
 
@@ -325,6 +361,25 @@ function updateMenu () {
           autoLaunch.enable()
         } else {
           autoLaunch.disable()
+        }
+        updateMenu()
+      }
+    })
+  }
+
+  { // 设置 - 登录时自动打开
+    const key = 'auto_update'
+    const value = config.get(key)
+    template.push({
+      type: 'checkbox',
+      label: '自动检测更新 (间隔两小时)',
+      checked: !!value,
+      click () {
+        config.set(key, !value)
+        if (value) {
+          updater.stopCheckInterval()
+        } else {
+          updater.checkInterval(false)
         }
         updateMenu()
       }

@@ -27,8 +27,19 @@ module.exports = (file, cookies, callback=noop) => {
   }
 
   request(options, (err, httpResponse, body) => {
-    if (err) return console.log('got error: ', err)
-    const json = JSON.parse(body.split('\n')[2])
-    callback(null, objectPath(json, 'data.pics.pic_1.pid'))
+    if (err) return callback(err, null)
+    let json = {}
+    try {
+      json = JSON.parse(body.split('\n')[2])
+    } catch (err) {
+      callback(err, null)
+      return
+    }
+    const count = json.data && json.data.count
+    if (count === 1) {
+      callback(null, objectPath(json, 'data.pics.pic_1.pid'))
+      return
+    }
+    return callback(count, null)
   })
 }

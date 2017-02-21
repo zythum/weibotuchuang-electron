@@ -5,9 +5,6 @@ exports.noop = () => {}
 exports.resource = subPath => {
   return path.resolve(__dirname, '../resource', subPath)
 }
-exports.appPath = (subPath) => {
-  return path.resolve(__dirname, '..', subPath)
-}
 
 exports.objectPath = (object, path) => {
   path = path.split('.')
