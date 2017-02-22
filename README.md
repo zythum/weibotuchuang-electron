@@ -8,9 +8,10 @@
 
 > 当前版本仅 macOS 系统可使用（因为朱一自己主要在 macOS 上干活）。之后也许大概可能会出一个叫做 weibotuchuang-lite 之类的平台通用版本。
 
-![屏幕快照 2017-02-21 下午7.53.17.png](http://wx4.sinaimg.cn/large/6e9ad2bdly1fcyc5bztafj216c0kqhdt.jpg)
+![app@2x.png](http://wx3.sinaimg.cn/large/6e9ad2bdly1fczpngdr4yj20sg0sgwqc.jpg)
 
 ## 使用方式
+![屏幕快照 2017-02-21 下午7.53.17.png](http://wx4.sinaimg.cn/large/6e9ad2bdly1fcyc5bztafj216c0kqhdt.jpg)
 
 1. 通过将图片文件拖拽到 menubar 图标上。
 2. 通过点击 menubar 图标，在菜单中选择 上传图片。

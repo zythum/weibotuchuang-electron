@@ -35,7 +35,7 @@ app.dock.hide()
 
 let tray = null
 function init () {
-  tray = new Tray(resource('icons/icon.png'))
+  tray = new Tray(resource('icons/menubar.png'))
   tray.on('drop-files', (event, filePaths) => {
     uploadFiles(filePaths.map(filePath => ({
       name: path.basename(filePath),
