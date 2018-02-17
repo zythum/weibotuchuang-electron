@@ -1,10 +1,15 @@
 const { app } = require('electron')
 const path = require('path')
+const crypto = require('crypto')
 
 exports.noop = () => {}
 
 exports.resource = subPath => {
   return path.resolve(app.getAppPath(), 'resource', subPath)
+}
+
+exports.md5 = string => {
+  return crypto.createHash('md5').update(String(string)).digest('hex')
 }
 
 exports.objectPath = (object, path) => {
