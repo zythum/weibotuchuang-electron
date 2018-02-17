@@ -119,6 +119,7 @@ function doUpload (cookies, files) {
             weiboLogin((err, cookies) => {
               storage.set('weibo_cookies', cookies)
               updateMenu()
+              doUpload(cookies, files)
             })
           })
           return
@@ -415,6 +416,7 @@ function updateMenu () {
         weiboLogin((err, cookies) => {
           storage.set('weibo_cookies', cookies)
           updateMenu()
+          notify('微博已登陆成功!', { body: '上传图片请拖拽图片到菜单栏图片' })
         })
       }
     })

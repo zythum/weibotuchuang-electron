@@ -3,7 +3,7 @@ const { URL } = require('url')
 const { noop, md5 } = require('./utils')
 
 const WEIBO_BASE = 'https://weibo.com'
-const SUCCESS_URL = '/weibo_is_a_good_image_bed'
+const SUCCESS_URL = '/aj/static/weibo_is_a_good_image_bed.html'
 const LOGIN_URL = '/aj/static/upimgback.html'
 
 const cookieString = cookies => {
@@ -122,7 +122,7 @@ const INSERT_CSS = `
 const EXECUTE_JAVASCRIPT = `;(function () {
   var help = document.createElement('div')
   help.className = 'help'
-  help.innerHTML = '微博登陆加载中...'
+  help.innerHTML = '微博登陆组件加载中...'
   help.onclick = doLogin
   document.body.insertBefore(help, document.body.firstChild)
 
@@ -151,7 +151,7 @@ const EXECUTE_JAVASCRIPT = `;(function () {
       loginSuccessUrl: '${WEIBO_BASE + SUCCESS_URL}'
     });
     setTimeout(function () {
-      help.innerHTML = '<a href="javascropt:;">点击我，完成微博登陆</a>'
+      help.innerHTML = '<a href="javascropt:;">点击我，完成微博登陆</a>';
     }, 1000);
   }
 }());`
